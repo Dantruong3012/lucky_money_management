@@ -9,7 +9,6 @@ public class JdbConnection {
     private static final String URL = "jdbc:mysql://mysql-1577d173-dantruong27102004-dfb3.i.aivencloud.com:25424/defaultdb?sslMode=REQUIRED";
     private static final String USER = "avnadmin";
 
-    // SỬA LẠI DÒNG NÀY: Chỉ để tên biến, ví dụ là "DB_PASSWORD"
     // Code sẽ tự động ra ngoài môi trường (Docker hoặc máy tính) để tìm giá trị của biến này.
     private static String PASSWORD = System.getenv("DB_PASSWORD");
 
