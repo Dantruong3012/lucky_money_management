@@ -1,0 +1,55 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group 'com.dantruong' // Đổi lại theo package của bạn nếu muốn
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    // JUnit 5 bản ổn định
+    junitVersion = '5.10.2'
+}
+
+sourceCompatibility = '21'
+targetCompatibility = '21'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    // --- 1. CORE SERVLET & JSP (Dùng compileOnly) ---
+    // Lý do: Tomcat đã có sẵn mấy cái này rồi, không đóng gói vào file .war nữa để tránh xung đột
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    compileOnly 'jakarta.servlet.jsp:jakarta.servlet.jsp-api:3.1.1'
+
+    // --- 2. JSTL (Bộ thẻ <c:forEach>, <c:if>...) ---
+    // Bắt buộc phải có 2 cái này: 1 cái là API, 1 cái là code thực thi (implementation)
+    implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
+    implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
+
+    // --- 3. DATABASE (MySQL) ---
+    // Driver để kết nối Java với MySQL
+    implementation 'com.mysql:mysql-connector-j:8.3.0'
+
+    // --- 4. TESTING ---
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+// Thư viện mã hóa mật khẩu BCrypt (nhẹ, chuẩn, an toàn)
+    implementation 'org.mindrot:jbcrypt:0.4'
+}
+
+// Thêm đoạn này vào build.gradle
+war {
+    archiveFileName = 'ROOT.war'
+}
+
+test {
+    useJUnitPlatform()
+}
